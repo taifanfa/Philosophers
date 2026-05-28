@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_routine.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmorais- <tmorais-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/28 15:09:08 by tmorais-          #+#    #+#             */
+/*   Updated: 2026/05/28 15:39:04 by tmorais-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	philo_think(t_philo *philo)
@@ -40,7 +52,7 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
-		ft_usleep(philo->table->time_to_eat, philo->table);
+		usleep(1000);
 	while (!is_simulation_over(philo->table))
 	{
 		if (is_full(philo))

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitor.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmorais- <tmorais-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/28 15:08:56 by tmorais-          #+#    #+#             */
+/*   Updated: 2026/05/28 15:39:30 by tmorais-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static void	set_simulation_over(t_table *table)
@@ -18,7 +30,7 @@ static int	philo_is_dead(t_philo *philo, long long *death_time)
 	pthread_mutex_unlock(&philo->meal_mutex);
 	now = get_time();
 	elapsed = now - last_meal;
-	if (elapsed > philo->table->time_to_die)
+	if (elapsed >= philo->table->time_to_die)
 	{
 		*death_time = now - philo->table->start_time;
 		return (1);
@@ -82,7 +94,7 @@ void	*monitor_routine(void *arg)
 			set_simulation_over(table);
 			break ;
 		}
-		usleep(500);
+		usleep(100);
 	}
 	return (NULL);
 }

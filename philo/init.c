@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmorais- <tmorais-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/28 15:08:30 by tmorais-          #+#    #+#             */
+/*   Updated: 2026/05/28 15:26:44 by tmorais-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static int	init_forks(t_table *table)
@@ -11,7 +23,13 @@ static int	init_forks(t_table *table)
 	while (i < table->num_philos)
 	{
 		if (pthread_mutex_init(&table->forks[i], NULL) != 0)
+		{
+			while (--i >= 0)
+				pthread_mutex_destroy(&table->forks[i]);
+			free(table->forks);
+			table->forks = NULL;
 			return (1);
+		}
 		i++;
 	}
 	return (0);
@@ -32,9 +50,15 @@ static int	init_philos(t_table *table)
 		table->philos[i].last_meal_time = table->start_time;
 		table->philos[i].table = table;
 		table->philos[i].left_fork = &table->forks[i];
-		table->philos[i].right_fork = &table->forks[(i + 1) % table->num_philos];
+		table->philos[i].right_fork = &table->forks[(i + 1)
+			% table->num_philos];
 		if (pthread_mutex_init(&table->philos[i].meal_mutex, NULL) != 0)
+		{
+			destroy_meal_mutexes(table, i);
+			free(table->philos);
+			table->philos = NULL;
 			return (1);
+		}
 		i++;
 	}
 	return (0);
@@ -74,14 +98,19 @@ void	cleanup(t_table *table)
 	int	i;
 
 	i = 0;
-	while (i < table->num_philos)
+	if (table->forks && table->philos)
 	{
-		pthread_mutex_destroy(&table->forks[i]);
-		pthread_mutex_destroy(&table->philos[i].meal_mutex);
-		i++;
+		while (i < table->num_philos)
+		{
+			pthread_mutex_destroy(&table->forks[i]);
+			pthread_mutex_destroy(&table->philos[i].meal_mutex);
+			i++;
+		}
 	}
 	pthread_mutex_destroy(&table->print_mutex);
 	pthread_mutex_destroy(&table->death_mutex);
-	free(table->forks);
-	free(table->philos);
+	if (table->forks)
+		free(table->forks);
+	if (table->philos)
+		free(table->philos);
 }

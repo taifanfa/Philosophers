@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_routine_eat.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmorais- <tmorais-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/28 15:09:02 by tmorais-          #+#    #+#             */
+/*   Updated: 2026/05/28 15:47:53 by tmorais-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	philo_eat_one(t_philo *philo)
@@ -42,12 +54,12 @@ void	philo_eat(t_philo *philo)
 		pthread_mutex_unlock(first);
 		return ;
 	}
-	print_state(philo, "is eating");
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal_time = get_time();
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->meal_mutex);
-	ft_usleep(philo->table->time_to_eat, philo->table);
+	print_state(philo, "is eating");
+	ft_usleep(philo->table->time_to_eat, NULL);
 	pthread_mutex_unlock(second);
 	pthread_mutex_unlock(first);
 }

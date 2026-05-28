@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmorais- <tmorais-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/28 15:09:14 by tmorais-          #+#    #+#             */
+/*   Updated: 2026/05/28 15:29:32 by tmorais-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -40,6 +52,7 @@ typedef struct s_table
 int			init_table(t_table *table, int argc, char **argv);
 void		cleanup(t_table *table);
 int			is_full(t_philo *philo);
+void		destroy_meal_mutexes(t_table *table, int i);
 void		get_forks(t_philo *philo, pthread_mutex_t **first,
 				pthread_mutex_t **second);
 void		philo_eat_one(t_philo *philo);
